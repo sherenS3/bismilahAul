@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peta TPS Kota Bandung</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        * {
+            --primary-green: #28a745;
+            --dark-green: #218838;
+            --light-green: #d4edda;
+            --secondary-green: #4CAF50; /* Slightly different green for gradient */
+            --white: #ffffff;
+            --light-gray: #f9f9f9;
+            --medium-gray: #e2e6ea;
+            --dark-gray: #7f8c8d;
+            --text-dark: #2c3e50;
+            --text-light: #555;
+            --shadow-light: rgba(0, 0, 0, 0.05);
+            --shadow-medium: rgba(0, 0, 0, 0.1);
+            --shadow-dark: rgba(0, 0, 0, 0.2);
+            --border-radius-sm: 5px;
+            --border-radius-md: 8px;
+            --border-radius-lg: 10px;
+            --border-radius-full: 50px;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        /* HEADER DENGAN BACKGROUND WASTE MANAGEMENT */
+        .big-header {
+            height: 100vh;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('ASSET/Kota_2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 70px;
+            background-color: rgba(40, 167, 69, 0.8);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo {
+            height: 50px;
+            width: auto;
+        }
+        
+        .logo-text {
+            margin-left: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 30px;
+        }
+        
+        nav ul li a {
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 18px;
+        }
+        
+        nav ul li a:hover {
+            color: #d4edda;
+        }
+        
+        .header-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .header-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+        }
+        
+        .header-content p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+        
+        .cta-button {
+            background-color: #28a745;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .cta-button:hover {
+            background-color: #218838;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+        }
+        
+        /* GENERAL CONTAINER AND SECTION STYLING */
+        .tps-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 20px;
+        }
+        
+        .section-tps {
+            margin: 40px 0;
+            padding: 20px; /* Tambahkan padding agar konten tidak terlalu mepet tepi */
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .section-tps h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .section-tps h2 .tps-icon {
+            margin-right: 15px;
+            color: #28a745;
+            font-size: 2.2rem;
+        }
+
+        /* NEW: Styling untuk bagian Pengertian Tipe-tipe TPS */
+        .tps-definitions-section {
+            padding: 40px 20px; /* Sesuaikan padding */
+            background-color: #f8f8f8; /* Warna latar belakang lembut */
+            margin-bottom: 40px; /* Jarak dengan bagian Statistik */
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .tps-definitions-section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+
+        .definition-item {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            margin-bottom: 25px; /* Jarak antar item definisi */
+            border-left: 5px solid #28a745; /* Garis hijau di kiri */
+        }
+
+        .definition-item:last-child {
+            margin-bottom: 0; /* Hapus margin bawah pada item terakhir */
+        }
+
+        .definition-item h3 {
+            color: #28a745;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .definition-item h3 .fa-icon { /* Icon untuk definisi TPS */
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .definition-item p {
+            line-height: 1.7;
+            color: #555;
+            font-size: 1rem;
+        }
+
+        /* BODY TPS */
+        .tps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .tps-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border-left: 5px solid #28a745;
+        }
+        
+        .tps-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .tps-info {
+            padding: 15px;
+            background: white;
+        }
+        
+        .tps-info h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tps-info p {
+            color: #7f8c8d;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        
+        .tps-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #868e96;
+        }
+        
+        .tps-icon {
+            margin-right: 8px;
+            color: #28a745;
+        }
+        
+        /* Filter Kategori */
+        .filter-kategori {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center; /* Pusatkan tombol filter */
+        }
+        
+        .filter-btn {
+            background: #f1f3f5;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-btn:hover {
+            background: #e2e6ea;
+        }
+
+        .filter-btn.active {
+            background: #28a745;
+            color: white;
+        }
+        
+        /* Peta */
+        .map-container {
+            height: 500px;
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        #tpsMap {
+            height: 100%;
+            width: 100%;
+        }
+        
+        /* Statistik */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            border-bottom: 4px solid #28a745; /* Garis bawah hijau */
+        }
+        
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #28a745;
+            margin: 10px 0;
+        }
+        
+        .stat-label {
+            color: #868e96;
+            font-size: 14px;
+        }
+        
+        /* Legenda */
+        .legend {
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            line-height: 1.5;
+            font-size: 14px;
+        }
+        
+        .legend i {
+            width: 18px;
+            height: 18px;
+            float: left;
+            margin-right: 8px;
+            opacity: 0.7;
+            border: 1px solid rgba(0,0,0,0.2); /* Tambahkan border untuk ikon warna solid */
+        }
+        .legend div.polygon-entry i {
+            border: 2px solid; /* Border untuk poligon */
+            background: none !important; /* Hapus background solid untuk poligon */
+            opacity: 1; /* Pastikan opacity penuh untuk border */
+        }
+        /* Style untuk garis jalan di legenda */
+        .legend div.line-entry i {
+            background: none !important; /* Hapus background solid */
+            border: none !important; /* Hapus border */
+            height: 3px; /* Tinggi garis */
+            margin-top: 8px; /* Atur posisi vertikal */
+            /* Add some width to represent the line */
+            width: 30px; 
+            display: block; /* Ensure it takes up full width for display */
+        }
+
+        /* Gaya untuk label kecamatan */
+        .kecamatan-label {
+            font-size: 12px; /* Ukuran font label kecamatan */
+            font-weight: bold; /* Tebal */
+            color: #333; /* Warna teks gelap */
+            text-shadow:
+                -1px -1px 0 #fff,
+                1px -1px 0 #fff,
+                -1px 1px 0 #fff,
+                1px 1px 0 #fff; /* Outline putih agar lebih mudah dibaca di atas warna poligon */
+            background: none; /* Hapus background default tooltip */
+            border: none; /* Hapus border default tooltip */
+            box-shadow: none; /* Hapus shadow default tooltip */
+            pointer-events: none; /* Penting! Membuat label tidak menghalangi klik pada peta */
+            white-space: nowrap; /* Mencegah teks terpotong */
+        }
+
+        .leaflet-tooltip-pane .leaflet-tooltip {
+            opacity: 1 !important; /* Pastikan opacity penuh karena permanent:true */
+            background: none; /* Hapus background default Leaflet */
+            border: none; /* Hapus border default Leaflet */
+            box-shadow: none; /* Hapus shadow default Leaflet */
+            white-space: nowrap; /* Mencegah teks terpotong */
+        }
+
+        /* Styling tambahan untuk popup */
+        .leaflet-popup-content-wrapper {
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 15px;
+        }
+        .leaflet-popup-content h3 {
+            color: #28a745;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        .popup-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 5px;
+        }
+        .popup-table td {
+            padding: 3px 0;
+            vertical-align: top;
+            font-size: 14px;
+        }
+        .popup-table td:first-child {
+            font-weight: bold;
+            width: 90px; /* Lebar kolom label */
+        }
+        .popup-image {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            border-radius: 5px;
+            display: block; /* Memastikan gambar berada di baris baru */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        /* NEW: Styling untuk bagian Pembuat */
+        .pembuat-info {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .pembuat-info h3 {
+            color: #28a745;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .pembuat-info p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        /* NEW: Styling untuk bagian Hubungi Saya */
+        .contact-section {
+            background-color: #28a745;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+            margin-top: 40px; /* Memberi jarak dari section sebelumnya */
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .contact-section h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .contact-section p {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .header-top {
+                padding: 15px 20px;
+            }
+            
+            nav {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .mobile-menu.active + nav {
+                display: block;
+                position: absolute;
+                top: 80px;
+                right: 20px;
+                background-color: rgba(40, 167, 69, 0.9);
+                padding: 20px;
+                border-radius: 10px;
+                z-index: 1000; /* Pastikan menu di atas konten lain */
+            }
+            
+            .mobile-menu.active + nav ul {
+                flex-direction: column;
+            }
+            
+            .mobile-menu.active + nav ul li {
+                margin: 10px 0;
+            }
+            
+            .header-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .header-content p {
+                font-size: 1.2rem;
+            }
+            
+            .tps-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-container {
+                grid-template-columns: 1fr; /* Statistik jadi satu kolom di mobile */
+            }
+
+            .tps-definitions-section, .section-tps {
+                padding: 20px;
+            }
+            .tps-definitions-section h2, .section-tps h2 {
+                font-size: 1.8rem;
+            }
+            .definition-item h3 {
+                font-size: 1.3rem;
+            }
+        }
+    
+body {
+    background-color: #f9f9f9;
+    color: #333;
+}
+.header-top {
+    backdrop-filter: blur(8px);
+    background-color: rgba(40, 167, 69, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.logo:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s;
+}
+.cta-button {
+    background: linear-gradient(135deg, #28a745, #218838);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    border: none;
+}
+.stat-card:hover,
+.tps-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.12);
+    transition: 0.3s ease-in-out;
+}
+
+/* Author Section */
+ .author-section {
+            padding: 80px 0; /* Sesuaikan padding */
+            background: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+            color: var(--white);
+            border-radius: var(--border-radius-lg);
+            box-shadow: 0 5px 15px var(--shadow-medium);
+            margin-top: 40px; /* Memberi jarak dari section sebelumnya */
+            text-align: center; /* Pusatkan konten */
+        }
+
+        .author-section .section-title {
+            color: var(--white);
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+        }
+
+        .author-content {
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            justify-content: center; /* Center content */
+            margin-bottom: 3rem;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            padding: 0 20px; /* Add padding to content */
+        }
+
+        .author-photo {
+            flex-shrink: 0;
+        }
+
+        .photo-frame {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 5px solid var(--white);
+            box-shadow: 0 10px 30px var(--shadow-dark);
+        }
+
+        .photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .author-info {
+            color: var(--white);
+            flex-grow: 1; /* Allow info to take available space */
+            max-width: 600px; /* Limit width for readability */
+            text-align: left; /* Align text to left */
+        }
+
+        .author-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--white);
+        }
+
+        .nim {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-info h4 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            color: var(--white);
+        }
+
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 15px; /* Increase gap for better spacing */
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 12px 15px; /* Adjust padding */
+            border-radius: var(--border-radius-md);
+            background: rgba(255, 255, 255, 0.15); /* Slightly more opaque background */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .contact-link:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateX(8px); /* More noticeable hover effect */
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-link i {
+            font-size: 1.4rem; /* Larger icon size */
+            width: 25px; /* Fixed width for alignment */
+            text-align: center;
+        }
+
+        .web-description {
+            opacity: 0.9;
+            line-height: 1.8;
+            text-align: justify; /* Justify text for better readability */
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--white);
+            opacity: 0.8;
+            margin-top: 3rem; /* Add space above copyright */
+        }
+        
+        .search-container {
+            animation: fadeInUp 1s ease 0.4s both;
+            padding: 0 20px; /* Add padding to search container */
+            margin-top: 30px; /* Space from header content */
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--border-radius-full);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px var(--shadow-dark);
+        }
+
+        .search-icon {
+            color: var(--text-light);
+            margin: 0 15px;
+            font-size: 1.2rem;
+        }
+
+        #searchInput {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 15px 10px; /* Adjust padding for better look with icon */
+            font-size: 1rem;
+            background: transparent;
+            color: var(--text-dark);
+        }
+
+        #searchInput::placeholder {
+            color: var(--dark-gray);
+        }
+
+        .search-btn {
+            background: var(--primary-green);
+            border: none;
+            border-radius: var(--border-radius-full);
+            padding: 15px 20px;
+            color: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem; /* Ensure consistent font size */
+            display: flex; /* For potential icon inside button */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-btn:hover {
+            background: var(--dark-green);
+            transform: translateX(2px);
+        }
+</style>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css" />
+</head>
+
+<body>
+    <header class="big-header">
+        <div class="header-top">
+            <div class="logo-container">
+                <span class="logo-text">TPSMudah</span>
+            </div>
+            <span>Peta Sebaran TPS Di Kota Bandung</span>
+            <div class="mobile-menu">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M3 12H21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M3 6H21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <path d="M3 18H21" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+            </div>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#pengertian">Pengertian TPS</a></li> 
+                <li><a href="#statistik">Statistik</a></li>
+                <li><a href="#data">Data TPS</a></li>
+                <li><a href="#peta">Peta Interaktif</a></li>
+                <li><a href="#Tentang Penulis">Tentang Penulis`</a></li> </ul>
+        </nav>
+
+        <div class="header-content">
+            <h1>Cari Informasi TPS di Kota Bandung</h1>
+            <p>Temukan lokasi dan informasi lengkap Tempat Pemrosesan Sampah di seluruh Kota Bandung</p>
+            <a href="#peta" class="cta-button">Lihat Peta</a> 
+        </div>
+        <div class="search-container">
+                <div class="search-box">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Cari TPS berdasarkan nama atau alamat...">
+                    <button class="search-btn" id="searchButton"> <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+    </header>
+
+    <main class="tps-container">
+        <section id="pengertian" class="tps-definitions-section">
+            <h2><i class="fas fa-info-circle tps-icon"></i> Pengertian Tipe-tipe TPS</h2>
+            <div class="definition-item">
+                <h3><i class="fas fa-recycle fa-icon"></i> TPS 3R (Reduce, Reuse, Recycle)</h3>
+                <p>TPS 3R adalah fasilitas pengolahan sampah terpadu yang bertujuan untuk mengurangi (Reduce), menggunakan kembali (Reuse), dan mendaur ulang (Recycle) sampah di sumbernya atau di tingkat komunitas. TPS ini biasanya dilengkapi dengan fasilitas pemilahan sampah organik dan anorganik, pencacahan, pengomposan, dan/atau bank sampah. Fokus utamanya adalah mengubah sampah menjadi barang yang berguna atau memiliki nilai ekonomis, serta secara signifikan mengurangi volume sampah yang harus dibuang ke Tempat Pemrosesan Akhir (TPA).</p>
+            </div>
+            <div class="definition-item">
+                <h3><i class="fas fa-building fa-icon"></i> TPS dengan Bangunan</h3>
+                <p>TPS dengan Bangunan adalah tempat penampungan sampah sementara yang dilengkapi dengan struktur bangunan permanen, seperti dinding dan atap. Bangunan ini berfungsi sebagai pelindung sampah dari cuaca (hujan dan panas), tempat penyimpanan peralatan kebersihan, serta area tertutup untuk menampung sampah agar tidak berserakan dan mengurangi potensi bau menyebar ke lingkungan sekitar. TPS jenis ini dirancang untuk pengelolaan sampah yang lebih terorganisir dan bersih sebelum sampah diangkut ke TPA atau fasilitas pengolahan lebih lanjut.</p>
+            </div>
+            <div class="definition-item">
+                <h3><i class="fas fa-dumpster fa-icon"></i> TPS Tanpa Bangunan</h3>
+                <p>TPS Tanpa Bangunan adalah area penampungan sampah sementara yang tidak memiliki struktur bangunan permanen yang melindunginya. Biasanya hanya berupa area terbuka, seringkali dengan pagar pembatas atau kontainer sampah besar, untuk menampung sampah sebelum diangkut. TPS jenis ini lebih sederhana dalam pembangunan dan pemeliharaannya, namun lebih rentan terhadap faktor cuaca, potensi penyebaran bau yang lebih luas, dan dampak visual yang kurang terjaga dibandingkan dengan TPS yang memiliki bangunan.</p>
+            </div>
+        </section>
+
+        <section id="statistik" class="section-tps">
+            <h2><i class="fas fa-chart-bar tps-icon"></i> Statistik Pengelolaan Sampah</h2>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <i class="fas fa-trash-alt" style="color: #28a745; font-size: 24px;"></i>
+                    <div class="stat-value">167</div>
+                    <div class="stat-label">Jumlah TPS Terdaftar</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-truck" style="color: #28a745; font-size: 24px;"></i>
+                    <div class="stat-value">1,450 ton</div>
+                    <div class="stat-label">Sampah/Hari</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-recycle" style="color: #28a745; font-size: 24px;"></i>
+                    <div class="stat-value">23%</div>
+                    <div class="stat-label">Tingkat Daur Ulang</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-check-circle" style="color: #28a745; font-size: 24px;"></i>
+                    <div class="stat-value">84%</div>
+                    <div class="stat-label">Cakupan Pelayanan</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="data" class="section-tps">
+            <h2><i class="fas fa-trash tps-icon"></i> Data TPS</h2>
+            <div class="filter-kategori">
+                <button class="filter-btn active" data-filter="all">Semua</button>
+                <button class="filter-btn" data-filter="TPS 3R">TPS 3R</button>
+                <button class="filter-btn" data-filter="TPS dengan bangunan">TPS dengan bangunan</button>
+                <button class="filter-btn" data-filter="TPS tanpa bangunan">TPS tanpa bangunan</button>
+            </div>
+
+            <div class="tps-grid">
+                <div class="tps-card" data-kategori="TPS tanpa bangunan">
+                    <div class="tps-info">
+                        <h3><i class="fas fa-trash-restore tps-icon"></i> TPS Babakan Sari (Tanpa Bangunan)</h3>
+                        <p><strong>Lokasi:</strong> Jl. Babakan Sari No. 45, Kiaracondong</p>
+                        <p><strong>Kapasitas:</strong> 15 ton/hari</p>
+                        <p><strong>Kategori:</strong> TPS tanpa bangunan</p>
+                        <div class="tps-meta">
+                            <span>Kode: TPS-001-KC</span>
+                            <span>Zona: Timur</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tps-card" data-kategori="TPS dengan bangunan">
+                    <div class="tps-info">
+                        <h3><i class="fas fa-building tps-icon"></i> TPS Cigondewah (Dengan Bangunan)</h3>
+                        <p><strong>Lokasi:</strong> Jl. Cigondewah Kaler, Margaasih</p>
+                        <p><strong>Kapasitas:</strong> 20 ton/hari</p>
+                        <p><strong>Kategori:</strong> TPS dengan bangunan</p>
+                        <div class="tps-meta">
+                            <span>Kode: TPS-045-MA</span>
+                            <span>Zona: Selatan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tps-card" data-kategori="TPS 3R">
+                    <div class="tps-info">
+                        <h3><i class="fas fa-recycle tps-icon"></i> TPS Sukajadi (TPS 3R)</h3>
+                        <p><strong>Lokasi:</strong> Jl. Sukajadi No. 128</p>
+                        <p><strong>Kapasitas:</strong> 8 ton/hari</p>
+                        <p><strong>Kategori:</strong> TPS 3R</p>
+                        <div class="tps-meta">
+                            <span>Kode: TPS-210-SJ</span>
+                            <span>Zona: Utara</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="peta" class="section-tps">
+            <h2><i class="fas fa-map-marked-alt tps-icon"></i> Peta TPS Interaktif</h2>
+            <div class="map-container">
+                <div id="tpsMap"></div>
+            </div>
+        </section>
+
+        <section id="author" class="author-section">
+            <div class="tps-container"> <h2 class="section-title">Tentang Penulis</h2>
+                <div class="author-content">
+                    <div class="author-photo">
+                        <div class="photo-frame">
+                            <img src="ASSET/FOTO.jpeg" alt="Aulia Dwi Rahma">
+                        </div>
+                    </div>
+                    <div class="author-info">
+                        <h3>Aulia Dwi Rahma</h3>
+                        <p class="nim">NIM: 2304660</p>
+                        <p class="description">
+                            Merupakan mahasiswa program studi Sains Informasi Geografi,
+                            Universitas Pendidikan Indonesia. Memiliki minat dalam bidang
+                            sistem informasi geografis dan pengelolaan lingkungan.
+                        </p>
+                        
+                        <div class="contact-info">
+                            <h4>Hubungi Saya</h4>
+                            <div class="contact-links">
+                                <a href="https://wa.me/085864768853" class="contact-link">
+                                    <i class="fab fa-whatsapp"></i>
+                                    <span>085864768853</span>
+                                </a>
+                                <a href="https://instagram.com/auliaululll" class="contact-link">
+                                    <i class="fab fa-instagram"></i>
+                                    <span>@auliaululll</span>
+                                </a>
+                                <a href="mailto:dwirahmaaulia@gmail.com" class="contact-link">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>dwirahmaaulia@gmail.com</span>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="web-description">
+                            <p>
+                                Web ini dibuat untuk memenuhi tugas WebGIS dengan tema memberikan
+                                informasi mengenai sebaran TPS di Kota Bandung. Aplikasi ini
+                                mengintegrasikan data spasial dan non-spasial untuk memberikan
+                                visualisasi yang komprehensif mengenai lokasi dan karakteristik
+                                TPS di seluruh wilayah Kota Bandung.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="copyright">
+                    <p>&copy; 2024 TPSMudah - Aulia Dwi Rahma. All rights reserved.</p>
+                </div>
+            </div>
+        </section>
+        </main>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // Script untuk menu mobile
+        const mobileMenu = document.querySelector('.mobile-menu');
+        mobileMenu.addEventListener('click', function() {
+            this.classList.toggle('active');
+            // Toggle visibility of navigation menu for mobile
+            const nav = document.querySelector('nav');
+            if (this.classList.contains('active')) {
+                nav.style.display = 'block';
+            } else {
+                nav.style.display = ''; // Reset to default or use 'none' if preferred
+            }
+        });
+
+        // Fungsi Filter Kategori
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update tombol aktif
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Filter TPS
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.tps-card').forEach(card => {
+                    if (filter === 'all' || card.dataset.kategori === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Smooth scroll untuk navigasi
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                    // Tutup menu mobile setelah klik (jika terbuka)
+                if (mobileMenu.classList.contains('active')) {
+                    mobileMenu.classList.remove('active');
+                    document.querySelector('nav').style.display = '';
+                }
+            });
+        });
+
+        // Inisialisasi Peta Leaflet
+        const map = L.map('tpsMap').setView([-6.9147, 107.6098], 12); // Koordinat pusat Bandung
+
+        // Tambahkan base map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        // --- Definisi Ikon Kustom ---
+        // Fungsi untuk mendapatkan URL ikon berdasarkan tipe TPS
+        function getIconUrl(type) {
+            const icons = {
+                'TPS tanpa bangunan': 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png', 
+                'TPS dengan bangunan': 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png', 
+                'TPS 3R': 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png', 
+                'default': 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-grey.png'
+            };
+            return icons[type] || icons['default'];
+        }
+
+        // Fungsi untuk membuat ikon kustom Leaflet
+        function getCustomIcon(kategori) {
+            let iconType;
+            if (kategori && kategori.toLowerCase().includes('tps tanpa bangunan')) {
+                iconType = 'TPS tanpa bangunan';
+            } else if (kategori && kategori.toLowerCase().includes('tps dengan bangunan')) {
+                iconType = 'TPS dengan bangunan';
+            } else if (kategori && kategori.toLowerCase().includes('tps 3r')) {
+                iconType = 'TPS 3R';
+            } else {
+                iconType = 'default';
+            }
+
+            return L.icon({
+                iconUrl: getIconUrl(iconType),
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34]
+            });
+        }
+        
+        // Fungsi untuk mendapatkan nama tipe yang lebih ramah pengguna (ditambahkan untuk jalan)
+        function getTypeName(type) {
+            const names = {
+                'TPS tanpa bangunan': 'TPS tanpa bangunan',
+                'TPS dengan bangunan': 'TPS dengan bangunan',
+                'TPS 3R': 'TPS 3R',
+                'permukiman': 'Area Permukiman',
+                'Jalan Arteri': 'Jalan Arteri', 
+                'Jalan Kolektor': 'Jalan Kolektor', 
+                'Jalan Lokal': 'Jalan Lokal',
+                'Jalan Lain': 'Jalan Lain'
+            };
+            return names[type] || 'Umum';
+        }
+
+        // --- Layer Groups untuk Overlays ---
+        const tpsTanpaBangunanLayer = L.layerGroup();
+        const tpsDenganBangunanLayer = L.layerGroup();
+        const tps3RLayer = L.layerGroup();
+        const tpsOtherLayer = L.layerGroup(); 
+        const permukimanLayer = L.layerGroup(); 
+        const batasKecamatanLayer = L.layerGroup(); 
+        const jalanArteriLayer = L.layerGroup(); 
+        const jalanKolektorLayer = L.layerGroup();
+        const jalanLokalLayer = L.layerGroup();
+        const jalanLainLayer = L.layerGroup();
+
+
+        // --- Fungsi Load GeoJSON ---
+
+        // 1. Load Data TPS (TITIK_TPS.geojson)
+        function loadTPSData() {
+            fetch('./ASSET/TITIK_TPS.geojson')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    L.geoJSON(data, {
+                        pointToLayer: function(feature, latlng) {
+                            const kategori = feature.properties.kategori; 
+                            return L.marker(latlng, {
+                                icon: getCustomIcon(kategori)
+                            });
+                        },
+                        onEachFeature: function(feature, layer) {
+                            const props = feature.properties;
+                            let popupContent = `
+                                <h3>${props.nama_tps || 'Nama TPS Tidak Tersedia'}</h3>
+                                <table class="popup-table">
+                                    
+                                </table>
+                            `;
+                            layer.bindPopup(popupContent);
+
+                            const kategoriTPS = props.kategori ? props.kategori.toLowerCase() : '';
+                            if (kategoriTPS.includes('tps tanpa bangunan')) {
+                                tpsTanpaBangunanLayer.addLayer(layer);
+                            } else if (kategoriTPS.includes('tps dengan bangunan')) {
+                                tpsDenganBangunanLayer.addLayer(layer);
+                            } else if (kategoriTPS.includes('tps 3r')) {
+                                tps3RLayer.addLayer(layer);
+                            } else {
+                                tpsOtherLayer.addLayer(layer);
+                            }
+                        }
+                    });
+                    tpsTanpaBangunanLayer.addTo(map);
+                    tpsDenganBangunanLayer.addTo(map);
+                    tps3RLayer.addTo(map);
+                })
+                .catch(error => {
+                    console.error('Error loading TPS GeoJSON:', error);
+                    alert('Gagal memuat data TPS. Cek konsol browser untuk detail.');
+                });
+        }
+
+        // 2. Load Data Permukiman (PERMUKIMAN.geojson)
+        function loadPermukimanData() {
+            fetch('./ASSET/PERMUNGKIMAN.geojson') 
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    L.geoJSON(data, {
+                        style: function(feature) {
+                            return {
+                                fillOpacity: 0.3,
+                                weight: 1,
+                                color: '#000000', // Warna border biru muda
+                                fillColor: '#f08080' // Warna fill biru sangat muda
+                            };
+                        },
+                        onEachFeature: function(feature, layer) {
+                            layer.bindPopup(`<h3>Area Permukiman</h3>`);
+                            permukimanLayer.addLayer(layer);
+                        }
+                    }).addTo(map);
+                })
+                .catch(error => {
+                    console.error('Error loading Permukiman GeoJSON:', error);
+                    alert('Gagal memuat data permukiman. Cek konsol browser untuk detail.');
+                });
+        }
+
+        // 3. Load Data Batas Kecamatan (Batas_Kecamatan.geojson)
+        function loadBatasKecamatanData() {
+            fetch('./ASSET/ADMKEC_BANDUNG.geojson')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    L.geoJSON(data, {
+                        style: function(feature) {
+                            const color = '#3498db'; // Warna biru untuk batas kecamatan
+                            return {
+                                fillColor: color,
+                                weight: 3,
+                                opacity: 1,
+                                color: '#333', // Warna garis batas
+                                dashArray: '5, 5', // Garis putus-putus
+                                fillOpacity: 0.2
+                            };
+                        },
+                        onEachFeature: function(feature, layer) {
+                            const props = feature.properties;
+                            const kecamatanName = props.NAMOBJ || 'Nama Kecamatan Tidak Tersedia';
+                            layer.bindTooltip(kecamatanName, {
+                                permanent: true,
+                                direction: 'center',
+                                className: 'kecamatan-label' // Gunakan class CSS yang baru
+                            }).openTooltip();
+
+                            let popupContent = `
+                                <h3>Kecamatan ${kecamatanName}</h3>
+                                <table class="popup-table">
+                                    <tr><td>Luas</td><td>: ${props.Luas_Km2 ? `${props.Luas_Km2} km²` : 'Tidak Tersedia'}</td></tr>
+                                    <tr><td>Populasi</td><td>: ${props.Populasi_2020 || 'Tidak Tersedia'}</td></tr>
+                                    <tr><td>Kepadatan</td><td>: ${props.Kepadatan_Jiwa_Km2 || 'Tidak Tersedia'} jiwa/km²</td></tr>
+                                </table>
+                            `;
+                            layer.bindPopup(popupContent);
+                            batasKecamatanLayer.addLayer(layer);
+                        }
+                    }).addTo(map); // Langsung tambahkan ke peta secara default
+                })
+                .catch(error => {
+                    console.error('Error loading Batas Kecamatan GeoJSON:', error);
+                    alert('Gagal memuat data Batas Kecamatan. Cek konsol browser untuk detail.');
+                });
+        }
+
+
+        
+
+        // Panggil fungsi untuk memuat data saat halaman dimuat
+        document.addEventListener('DOMContentLoaded', () => {
+            loadTPSData();
+            loadPermukimanData();
+            loadBatasKecamatanData();
+            loadJalanData();
+        });
+
+
+        // --- Kontrol Layer dan Legenda ---
+        const overlayMaps = {
+            "TPS 3R": tps3RLayer,
+            "TPS dengan bangunan": tpsDenganBangunanLayer,
+            "TPS tanpa bangunan": tpsTanpaBangunanLayer,
+            "Area Permukiman": permukimanLayer,
+            "Batas Kecamatan": batasKecamatanLayer,
+ 
+        };
+
+        L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
+
+        // Legenda Kustom
+        const legend = L.control({ position: 'bottomright' });
+
+        legend.onAdd = function (map) {
+            const div = L.DomUtil.create('div', 'info legend');
+            const categories = [
+                { name: 'TPS 3R', color: '#007bff', type: 'marker' },
+                { name: 'TPS dengan bangunan', color: '#dc3545', type: 'marker' },
+                { name: 'TPS tanpa bangunan', color: '#28a745', type: 'marker' },
+                { name: 'Area Permukiman', color: '#e6f7ff', borderColor: '#b3e0ff', type: 'polygon' },
+                { name: 'Batas Kecamatan', color: 'red', dashArray: '5, 5', type: 'polygon-border' },
+
+            ];
+
+            // loop through our density intervals and generate a label with a colored square for each interval
+            for (let i = 0; i < categories.length; i++) {
+                const category = categories[i];
+                let iconHtml = '';
+                if (category.type === 'marker') {
+                    // Marker icon (ambil warna dari URL ikon)
+                    const markerIconUrl = getIconUrl(category.name);
+                    iconHtml = `<img src="${markerIconUrl}" style="width: 18px; height: 18px; float: left; margin-right: 8px;">`;
+                } else if (category.type === 'polygon') {
+                    iconHtml = `<i style="background:${category.color}; border: 1px solid ${category.borderColor || category.color};"></i>`;
+                } else if (category.type === 'polygon-border') {
+                    iconHtml = `<div class="polygon-entry"><i style="border-color:${category.color}; border-style:dashed; border-width:2px; height:18px;"></i></div>`;
+                } else if (category.type === 'line') {
+                    iconHtml = `<div class="line-entry"><i style="background:${category.color}; height:3px; width:30px; margin-top:8px;"></i></div>`;
+                }
+                
+                div.innerHTML +=
+                    '<div>' + iconHtml + getTypeName(category.name) + '</div>';
+            }
+            return div;
+        };
+
+        legend.addTo(map);
+
+    </script>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init();</script>
+</body>
+
+</html>

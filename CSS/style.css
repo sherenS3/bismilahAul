@@ -1,0 +1,1006 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap');
+
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-green: #2d5e3e;
+    --secondary-green: #4a7c59;
+    --light-green: #8fbc8f;
+    --accent-green: #228b22;
+    --dark-green: #1e3a28;
+    --earth-brown: #8b7355;
+    --light-cream: #f5f5dc;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+    --text-dark: #2c3e50;
+    --text-light: #6c757d;
+    --shadow: rgba(0, 0, 0, 0.1);
+    --shadow-dark: rgba(0, 0, 0, 0.2);
+    --border-radius-lg: 15px;
+    --border-radius-md: 8px;
+    --border-radius-sm: 5px;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: var(--text-dark);
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    background-color: var(--light-gray);
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Navbar Styles */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(45, 94, 62, 0.95); /* Slightly transparent for blur effect */
+    backdrop-filter: blur(10px); /* Modern blur effect */
+    z-index: 1000;
+    transition: all 0.3s ease;
+    padding: 1rem 0;
+}
+
+.navbar.scrolled {
+    background: var(--primary-green);
+    box-shadow: 0 2px 20px var(--shadow);
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 1.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer; /* Indicate clickable for scrolling to top/hero */
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0; /* Ensure no default margin */
+}
+
+.nav-link {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 5px 0; /* Add padding for a better hover area */
+}
+
+.nav-link:hover {
+    color: var(--light-green);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; /* Adjust to be directly below text */
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--light-green);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+    z-index: 1001; /* Ensure hamburger is above menu when open */
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--white);
+    margin: 3px 0;
+    transition: 0.3s;
+}
+
+/* Hamburger active state (for JS toggle) */
+.hamburger.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Hero Section */
+.hero {
+    height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 80px; /* Space for fixed navbar */
+}
+
+.hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(45, 94, 62, 0.7), rgba(30, 58, 40, 0.8)),
+                url('https://images.pexels.com/photos/2150/sky-space-dark-galaxy.jpg?auto=compress&cs=tinysrgb&w=1920&h=1080&fit=crop') center/cover;
+    z-index: -1;
+}
+
+.hero-content {
+    text-align: center;
+    color: var(--white);
+    max-width: 800px;
+    padding: 0 20px;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+    animation: fadeInUp 1s ease;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    animation: fadeInUp 1s ease 0.2s both;
+}
+
+.search-container {
+    animation: fadeInUp 1s ease 0.4s both;
+}
+
+.search-box {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto;
+    background: var(--white);
+    border-radius: 50px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 10px 30px var(--shadow-dark);
+}
+
+.search-icon {
+    color: var(--text-light);
+    margin: 0 15px;
+    font-size: 1.2rem;
+}
+
+#searchInput {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 15px 10px; /* Adjust padding for better look with icon */
+    font-size: 1rem;
+    background: transparent;
+    color: var(--text-dark);
+}
+
+#searchInput::placeholder {
+    color: var(--text-light);
+}
+
+.search-btn {
+    background: var(--primary-green);
+    border: none;
+    border-radius: 50px;
+    padding: 15px 20px;
+    color: var(--white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 1rem; /* Ensure consistent font size */
+    display: flex; /* For potential icon inside button */
+    align-items: center;
+    justify-content: center;
+}
+
+.search-btn:hover {
+    background: var(--dark-green);
+    transform: translateX(2px);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1; /* Ensure it's above hero-bg */
+}
+
+.scroll-down {
+    width: 30px;
+    height: 50px;
+    border: 2px solid var(--white);
+    border-radius: 25px;
+    position: relative;
+    cursor: pointer; /* Indicate it's clickable */
+}
+
+.scroll-down::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: var(--white);
+    border-radius: 50%;
+    animation: scroll 2s infinite;
+}
+
+/* Map Section */
+.map-section {
+    padding: 100px 0;
+    background: var(--light-gray);
+    padding-top: 50px; /* Adjust padding for map section to start below hero */
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--primary-green);
+}
+
+.map-container {
+    position: relative;
+    height: 600px;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    box-shadow: 0 15px 35px var(--shadow);
+    background-color: var(--white); /* Fallback */
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+    border-radius: var(--border-radius-lg); /* Apply border-radius to map itself */
+}
+
+/* Leaflet Overrides (Crucial for styling Leaflet elements) */
+.leaflet-control-container .leaflet-top.leaflet-right,
+.leaflet-control-container .leaflet-top.leaflet-left,
+.leaflet-control-container .leaflet-bottom.leaflet-left,
+.leaflet-control-container .leaflet-bottom.leaflet-right {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Consistent spacing with map-controls */
+    margin: 20px; /* Default margin for Leaflet controls */
+}
+
+/* Custom map controls - ensure these are outside Leaflet default control positions
+   or merge them into Leaflet custom controls if possible in JS */
+.map-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.map-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--white);
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px var(--shadow);
+    transition: all 0.3s ease;
+    color: var(--primary-green);
+    font-size: 1.2rem; /* For icon buttons */
+}
+
+.map-btn:hover {
+    background: var(--primary-green);
+    color: var(--white);
+    transform: scale(1.05);
+}
+
+/* Leaflet Popup Styling */
+.leaflet-popup-content-wrapper {
+    border-radius: var(--border-radius-md);
+    padding: 0; /* Remove default padding to control content padding inside */
+    box-shadow: 0 5px 20px var(--shadow-dark);
+}
+
+.leaflet-popup-content {
+    margin: 0;
+    padding: 20px; /* Padding for content inside popup */
+    max-width: 300px; /* Limit popup width */
+}
+
+.leaflet-popup-content h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--primary-green);
+    margin-bottom: 10px;
+}
+
+.leaflet-popup-content p {
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+.leaflet-popup-content strong {
+    color: var(--secondary-green);
+}
+
+.leaflet-popup-content a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: var(--primary-green);
+    color: var(--white);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    transition: background-color 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.leaflet-popup-content a:hover {
+    background-color: var(--dark-green);
+}
+
+.leaflet-popup-tip {
+    background: var(--white); /* Match popup background */
+}
+
+/* Custom Legend & Layer Control Styling */
+.legend,
+.layer-control {
+    position: absolute;
+    background: var(--white);
+    padding: 15px;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 5px 15px var(--shadow);
+    z-index: 1000; /* Ensure they are above the map */
+}
+
+.legend {
+    bottom: 20px;
+    left: 20px;
+    min-width: 200px;
+}
+
+.legend h4 {
+    margin-bottom: 10px;
+    color: var(--primary-green);
+    font-size: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: 8px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-dark);
+}
+
+.legend-symbol {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-right: 10px;
+    flex-shrink: 0; /* Prevent shrinking on smaller screens */
+}
+
+.legend-symbol.tps3r {
+    background: #ff6b6b; /* Reddish for TPS3R */
+}
+
+.legend-symbol.tps-building {
+    background: #4ecdc4; /* Cyan for TPS with building */
+}
+
+.legend-symbol.tps-no-building {
+    background: #45b7d1; /* Light blue for TPS no building */
+}
+
+.legend-symbol.district {
+    background: #96ceb4; /* Light green for districts */
+    border-radius: var(--border-radius-sm); /* Square for area */
+}
+
+.legend-line {
+    width: 20px;
+    height: 3px;
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+.legend-line.arterial {
+    background: #e74c3c; /* Red for arterial roads */
+}
+
+.legend-line.collector {
+    background: #f39c12; /* Orange for collector roads */
+}
+
+.legend-line.local {
+    background: #3498db; /* Blue for local roads */
+}
+
+.layer-control {
+    top: 20px;
+    left: 20px;
+}
+
+.layer-control h4 {
+    margin-bottom: 10px;
+    color: var(--primary-green);
+    font-size: 1rem;
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: 8px;
+}
+
+.layer-control label {
+    display: flex; /* Use flex to align checkbox and text */
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: var(--text-dark);
+}
+
+.layer-control input[type="checkbox"] {
+    margin-right: 8px;
+    transform: scale(1.1); /* Slightly larger checkbox */
+    accent-color: var(--primary-green); /* Color the checkbox itself */
+}
+
+/* Loading Indicator (if used in JS) */
+#loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Above everything */
+    transition: opacity 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.spinner {
+    border: 5px solid rgba(0, 0, 0, 0.1);
+    border-top: 5px solid var(--primary-green);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+/* Data Section */
+.data-section {
+    padding: 100px 0;
+    background: var(--white);
+}
+
+.section-description {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    font-size: 1.1rem;
+    color: var(--text-light);
+    line-height: 1.8;
+}
+
+.carousel-container {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 40px; /* Add padding to make space for buttons */
+}
+
+.carousel {
+    display: flex;
+    overflow: hidden;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 15px 35px var(--shadow);
+    background-color: var(--white);
+    position: relative; /* For positioning carousel slides */
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100%;
+}
+
+.carousel-slide {
+    min-width: 100%; /* Each slide takes full width of carousel */
+    display: flex;
+    background: var(--white);
+    flex-shrink: 0; /* Prevent slides from shrinking */
+}
+
+.slide-image {
+    width: 40%;
+    height: 400px;
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--border-radius-lg) 0 0 var(--border-radius-lg);
+    object-fit: cover; /* Ensure image covers the area without distortion */
+}
+
+.slide-content {
+    padding: 2rem;
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.slide-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--primary-green);
+    margin-bottom: 1rem;
+}
+
+.slide-info {
+    margin-bottom: 1rem;
+}
+
+.slide-info h4 {
+    color: var(--secondary-green);
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.slide-info p {
+    color: var(--text-light);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--primary-green);
+    color: var(--white);
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem; /* Larger icons for buttons */
+    transition: all 0.3s ease;
+    z-index: 10;
+    box-shadow: 0 5px 15px var(--shadow-dark);
+}
+
+.carousel-btn:hover {
+    background: var(--dark-green);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn.prev {
+    left: 0; /* Align to the edge of the container */
+}
+
+.carousel-btn.next {
+    right: 0; /* Align to the edge of the container */
+}
+
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 2rem;
+}
+
+.indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--light-gray);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 1px solid var(--text-light); /* Add border for contrast */
+}
+
+.indicator.active {
+    background: var(--primary-green);
+    transform: scale(1.2);
+    border-color: var(--primary-green);
+}
+
+/* Author Section */
+.author-section {
+    padding: 100px 0;
+    background: linear-gradient(135deg, var(--light-green), var(--secondary-green));
+    color: var(--white); /* Default text color for this section */
+}
+
+.author-section .section-title {
+    color: var(--white);
+}
+
+.author-content {
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    margin-bottom: 3rem;
+    flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    justify-content: center; /* Center content when wrapped */
+}
+
+.author-photo {
+    flex-shrink: 0;
+}
+
+.photo-frame {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid var(--white);
+    box-shadow: 0 10px 30px var(--shadow-dark);
+}
+
+.photo-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.author-info {
+    color: var(--white);
+    flex-grow: 1; /* Allow info to take available space */
+}
+
+.author-info h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: var(--white); /* Ensure heading is white */
+}
+
+.nim {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.description {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+}
+
+.contact-info h4 {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+    color: var(--white);
+}
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--white);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 10px;
+    border-radius: var(--border-radius-md);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.contact-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+}
+
+.contact-link i {
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center; /* Center icon */
+}
+
+.web-description {
+    opacity: 0.9;
+    line-height: 1.8;
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--white);
+    opacity: 0.8;
+    margin-top: 3rem; /* Add space above copyright */
+}
+
+/* Animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(-50%) translateY(0);
+    }
+    50% {
+        transform: translateX(-50%) translateY(15px);
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .section-title {
+        font-size: 2.2rem;
+    }
+
+    .carousel-btn.prev {
+        left: 5px;
+    }
+
+    .carousel-btn.next {
+        right: 5px;
+    }
+
+    .slide-image {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+    
+    .nav-menu {
+        position: fixed;
+        left: -100%; /* Hidden by default */
+        top: 70px; /* Below the navbar */
+        flex-direction: column;
+        background-color: var(--primary-green);
+        width: 100%;
+        text-align: center;
+        transition: 0.3s;
+        box-shadow: 0 10px 27px var(--shadow);
+        padding: 20px 0;
+        height: calc(100vh - 70px); /* Full height of remaining viewport */
+        overflow-y: auto; /* Scrollable if menu items exceed height */
+    }
+    
+    .nav-menu.active {
+        left: 0; /* Slide in */
+    }
+
+    .nav-link {
+        padding: 15px 0; /* More padding for mobile links */
+        font-size: 1.1rem;
+    }
+    
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+    
+    .search-box {
+        flex-direction: column;
+        gap: 10px;
+        padding: 20px;
+        border-radius: var(--border-radius-lg); /* Larger border radius for stacked elements */
+    }
+
+    #searchInput {
+        padding: 10px; /* Adjust padding for stacked input */
+        text-align: center;
+    }
+
+    .search-btn {
+        width: 80%; /* Make button wider */
+        padding: 12px 20px;
+    }
+    
+    .map-container {
+        height: 400px;
+    }
+    
+    .carousel-slide {
+        flex-direction: column;
+    }
+    
+    .slide-image {
+        width: 100%;
+        height: 250px; /* Adjusted height for mobile */
+        border-radius: var(--border-radius-lg) var(--border-radius-lg) 0 0; /* Top corners rounded */
+    }
+    
+    .slide-content {
+        width: 100%;
+        padding: 1.5rem; /* Less padding on small screens */
+    }
+    
+    .author-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+    
+    .contact-links {
+        align-items: center;
+    }
+    
+    .carousel-btn.prev {
+        left: 10px;
+    }
+    
+    .carousel-btn.next {
+        right: 10px;
+    }
+
+    .legend,
+    .layer-control {
+        position: relative; /* Change to relative for better flow on small screens */
+        margin: 20px auto; /* Center them horizontally */
+        width: calc(100% - 40px); /* Full width minus margin */
+        max-width: 400px; /* Max width for readability */
+        left: auto;
+        right: auto;
+        top: auto;
+        bottom: auto;
+    }
+
+    .map-controls {
+        position: relative; /* Change to relative or adjust positioning */
+        flex-direction: row; /* Display buttons in a row */
+        justify-content: center;
+        margin-top: 20px;
+        width: 100%;
+        top: auto;
+        right: auto;
+    }
+    
+    .map-btn {
+        margin: 0 5px; /* Spacing between row buttons */
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 15px;
+    }
+    
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .search-box {
+        padding: 15px;
+    }
+
+    #searchInput {
+        padding: 8px;
+    }
+
+    .search-btn {
+        font-size: 0.9rem;
+    }
+
+    .slide-title {
+        font-size: 1.5rem;
+    }
+
+    .author-info h3 {
+        font-size: 1.8rem;
+    }
+
+    .photo-frame {
+        width: 150px;
+        height: 150px;
+    }
+
+    .legend,
+    .layer-control {
+        padding: 10px;
+    }
+
+    .legend h4, .layer-control h4 {
+        font-size: 0.9rem;
+    }
+
+    .legend-item, .layer-control label {
+        font-size: 0.85rem;
+    }
+}
